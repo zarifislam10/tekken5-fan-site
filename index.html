@@ -481,6 +481,42 @@
       display: block;
     }
 
+    .carousel-frame .expand-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 22px;
+      height: 22px;
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.85), rgba(15, 15, 15, 0.9));
+      border-top: 1px solid #777;
+      border-left: 1px solid #666;
+      border-right: 1px solid #333;
+      border-bottom: 1px solid #222;
+      color: #c0bfb8;
+      font-size: 11px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s, box-shadow 0.2s;
+      z-index: 15;
+      pointer-events: none;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .carousel-frame:hover .expand-btn {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carousel-frame .expand-btn:hover {
+      background: linear-gradient(135deg, rgba(140, 0, 0, 0.8), rgba(80, 0, 0, 0.9));
+      border-top-color: #cc0000;
+      border-left-color: #aa0000;
+      color: #f0ead6;
+      box-shadow: 0 0 8px rgba(200, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.5);
+    }
+
     .carousel-frame:hover,
     .carousel-frame:focus-visible {
       z-index: 10 !important;
@@ -530,7 +566,7 @@
 
     .carousel-frame.pos-hidden-right {
       left: 460px;
-      top: 70px;
+      top: 55px;
       width: 150px;
       height: 115px;
       z-index: 1;
@@ -539,10 +575,10 @@
     }
 
     .carousel-frame.pos-hidden-left {
-      left: -150px;
-      top: 70px;
-      width: 150px;
-      height: 115px;
+      left: 80px;
+      top: 280px;
+      width: 120px;
+      height: 90px;
       z-index: 1;
       opacity: 0;
       pointer-events: none;
@@ -988,18 +1024,23 @@
               <div class="carousel-stage" id="carouselStage">
                 <div class="carousel-frame pos-main" tabindex="0" role="button" aria-label="Screenshot 1: Feng vs Jin" data-index="0">
                   <img src="img/screengrab1.jpg" alt="Feng vs Jin fight">
+                  <span class="expand-btn" title="View full size">&#x2922;</span>
                 </div>
                 <div class="carousel-frame pos-side" tabindex="0" role="button" aria-label="Screenshot 2: Hwoarang vs Armor King" data-index="1">
                   <img src="img/screengrab2.png" alt="Hwoarang vs Armor King">
+                  <span class="expand-btn" title="View full size">&#x2922;</span>
                 </div>
                 <div class="carousel-frame pos-small" tabindex="0" role="button" aria-label="Screenshot 3: Handstand kick" data-index="2">
                   <img src="img/screengrab3.jpg" alt="Christie handstand kick vs Paul">
+                  <span class="expand-btn" title="View full size">&#x2922;</span>
                 </div>
                 <div class="carousel-frame pos-hidden-right" tabindex="-1" data-index="3">
                   <img src="img/screengrab4.jpg" alt="Paul Phoenix close-up">
+                  <span class="expand-btn" title="View full size">&#x2922;</span>
                 </div>
                 <div class="carousel-frame pos-hidden-right" tabindex="-1" data-index="4">
                   <img src="img/screengrab5.jpg" alt="Asuka fighting stance">
+                  <span class="expand-btn" title="View full size">&#x2922;</span>
                 </div>
               </div>
             </div>
@@ -1269,40 +1310,33 @@
         if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox();
       });
 
-      var clickTimer = null;
-      var clickTarget = null;
-      var savedOrder = null;
+      // Auto-advance every 4 seconds
+      var autoTimer = setInterval(next, 4000);
+      function resetAuto() {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(next, 4000);
+      }
+
       frames.forEach(function(f) {
-        f.addEventListener('click', function() {
-          if (clickTimer && clickTarget === f) {
-            // Double click: revert the cycle from first click and open lightbox
-            clearTimeout(clickTimer);
-            clickTimer = null;
-            clickTarget = null;
-            if (savedOrder) {
-              order = savedOrder;
-              apply();
-              savedOrder = null;
-            }
-            var img = f.querySelector('img');
-            if (img) openLightbox(img.src);
-            return;
-          }
-          if (clickTimer) clearTimeout(clickTimer);
-          // Save order before cycling so we can revert on double click
-          savedOrder = order.slice();
-          clickTarget = f;
+        f.addEventListener('click', function(e) {
+          if (e.target.classList.contains('expand-btn')) return;
+          resetAuto();
           if (f.classList.contains('pos-small')) prev();
           else next();
-          clickTimer = setTimeout(function() {
-            clickTimer = null;
-            clickTarget = null;
-            savedOrder = null;
-          }, 350);
         });
+        var btn = f.querySelector('.expand-btn');
+        if (btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            resetAuto();
+            var img = f.querySelector('img');
+            if (img) openLightbox(img.src);
+          });
+        }
         f.addEventListener('keydown', function(e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
+            resetAuto();
             if (f.classList.contains('pos-small')) prev();
             else next();
           }
@@ -1311,6 +1345,7 @@
 
       document.addEventListener('keydown', function(e) {
         if (e.target.closest('.screenshot-carousel')) {
+          resetAuto();
           if (e.key === 'ArrowRight') next();
           else if (e.key === 'ArrowLeft') prev();
         }
