@@ -414,6 +414,7 @@
       width: 80%;
       z-index: 1;
       opacity: 1;
+      filter: brightness(1.4) saturate(1.2);
     }
 
     .fire-trail {
@@ -421,15 +422,31 @@
       bottom: 0;
       left: 358px;
       width: 80%;
-      height: 150px;
+      height: 80px;
       object-fit: cover;
       object-position: bottom;
       pointer-events: none;
       z-index: 3;
+      filter: brightness(1) saturate(1);
+    }
+
+    .fire-asuka {
+      position: absolute;
+      bottom: 0;
+      left: 310px;
+      width: 500px;
+      height: auto;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+      filter: brightness(1.1) saturate(1.1);
     }
 
     @media (max-width: 1400px) {
       .fire-trail {
+        display: none;
+      }
+      .fire-asuka {
         display: none;
       }
     }
@@ -1014,6 +1031,7 @@
         </section>
 
         <div class="fire-carousel-wrap">
+          <img src="img/fire-asuka.png" alt="" class="fire-asuka">
           <img src="img/fire-trail.png" alt="" class="fire-trail">
           <hr class="divider-line">
         </div>
