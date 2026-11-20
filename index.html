@@ -455,7 +455,7 @@
     .carousel-stage {
       position: relative;
       width: 460px;
-      height: 260px;
+      height: 300px;
     }
 
     .carousel-frame {
@@ -469,7 +469,7 @@
       box-shadow:
         0 0 8px 2px rgba(240, 234, 214, 0.12),
         0 3px 10px rgba(0, 0, 0, 0.5);
-      transition: all 0.3s ease, box-shadow 0.3s ease;
+      transition: left 0.3s ease, top 0.3s ease, width 0.3s ease, height 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
       transform-origin: center center;
       transform-style: preserve-3d;
     }
@@ -535,7 +535,7 @@
     }
 
     .carousel-frame.pos-main {
-      left: 0;
+      left: 20px;
       top: 0;
       width: 240px;
       height: 180px;
@@ -545,7 +545,7 @@
     }
 
     .carousel-frame.pos-side {
-      left: 250px;
+      left: 270px;
       top: 55px;
       width: 190px;
       height: 145px;
@@ -555,10 +555,10 @@
     }
 
     .carousel-frame.pos-small {
-      left: 110px;
-      top: 140px;
-      width: 130px;
-      height: 100px;
+      left: 135px;
+      top: 170px;
+      width: 150px;
+      height: 115px;
       z-index: 4;
       opacity: 1;
       pointer-events: auto;
@@ -575,10 +575,10 @@
     }
 
     .carousel-frame.pos-hidden-left {
-      left: 80px;
-      top: 280px;
-      width: 120px;
-      height: 90px;
+      left: -160px;
+      top: 0;
+      width: 150px;
+      height: 115px;
       z-index: 1;
       opacity: 0;
       pointer-events: none;
@@ -1321,8 +1321,8 @@
         f.addEventListener('click', function(e) {
           if (e.target.classList.contains('expand-btn')) return;
           resetAuto();
-          if (f.classList.contains('pos-small')) prev();
-          else next();
+          if (f.classList.contains('pos-side')) next();
+          else if (f.classList.contains('pos-small')) prev();
         });
         var btn = f.querySelector('.expand-btn');
         if (btn) {
@@ -1337,8 +1337,8 @@
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             resetAuto();
-            if (f.classList.contains('pos-small')) prev();
-            else next();
+            if (f.classList.contains('pos-side')) next();
+            else if (f.classList.contains('pos-small')) prev();
           }
         });
       });
