@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEKKEN 5 - The King of Iron Fist</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      position: relative;
+      overflow-x: hidden;
+      background-color: #0a0a0a;
+      background-image:
+        radial-gradient(ellipse at top, rgba(80, 0, 0, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom, rgba(20, 20, 20, 1) 0%, transparent 80%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 255, 255, 0.01) 2px,
+          rgba(255, 255, 255, 0.01) 4px
+        );
+      color: #c4b89a;
+      font-family: 'Cinzel', 'Times New Roman', serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    .page-wrapper {
+      max-width: 100%;
+      margin: 0;
+      padding: 0 40px 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .corner-chain {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .corner-chain-back {
+      opacity: 1;
+      filter: brightness(0.4);
+    }
+
+    .corner-chain-base-left {
+      top: 0;
+      left: 0;
+      width: 170px;
+      z-index: 3;
+      filter: brightness(0.55);
+    }
+
+    .corner-chain-tall-bottom-right {
+      bottom: 0;
+      right: 0;
+      width: 220px;
+      opacity: 1;
+    }
+
+    .corner-chain-top-left {
+      top: -60px;
+      left: 40px;
+      width: 400px;
+    }
+
+    .corner-chain-top-right {
+      top: -60px;
+      right: 40px;
+      width: 400px;
+      transform: scaleX(-1);
+    }
+
+    .corner-chain-bottom-left {
+      bottom: 0;
+      left: 0;
+      width: 280px;
+    }
+
+    .corner-chain-bottom-right {
+      bottom: 0;
+      right: 0;
+      width: 280px;
+      transform: scaleX(-1);
+    }
+
+    .corner-chain-top-center {
+      top: -20px;
+      right: 0;
+      width: 400px;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 0 0;
+      border-bottom: 2px solid #333;
+      position: relative;
+      overflow: visible;
+      margin-left: -40px;
+      margin-right: -40px;
+    }
+
+    .header-video-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    header video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .header-chains {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .header-chain {
+      position: absolute;
+      width: 500px;
+      pointer-events: none;
+    }
+
+    .header-chain-left {
+      top: -60px;
+      left: 40px;
+      filter: brightness(0.88);
+    }
+
+    .header-chain-right {
+      top: -60px;
+      right: 40px;
+      transform: scaleX(-1);
+      filter: brightness(0.88);
+    }
+
+    .header-chain-overlay6-right {
+      position: absolute;
+      top: -20px;
+      right: 0;
+      width: 400px;
+      z-index: 1;
+      filter: brightness(0.4);
+    }
+
+    .header-chain-overlay6-left {
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 400px;
+      z-index: 1;
+      transform: scaleX(-1);
+      filter: brightness(0.4);
+    }
+
+    .header-chain-back-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 170px;
+      z-index: 1;
+      opacity: 1;
+      filter: brightness(0.4);
+      transform: scaleX(-1);
+    }
+
+    .golden-lightning {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .crooked-lightning {
+      transform: translate(-50%, -50%);
+      width: 1200px;
+      filter: blur(0.3px) brightness(1.1) drop-shadow(0 0 4px rgba(255, 150, 0, 0.4));
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    .golden-lightning-main {
+      transform: translate(-50%, -40%);
+      width: 2400px;
+      filter: blur(0.3px) brightness(1.1) drop-shadow(0 0 5px rgba(255, 150, 0, 0.4));
+      opacity: 0.9;
+    }
+
+    .golden-lightning-back-left {
+      transform: translate(-65%, -55%) scaleX(-1);
+      width: 950px;
+      filter: blur(1.5px) brightness(0.8) drop-shadow(0 0 10px rgba(80, 140, 255, 0.5)) drop-shadow(0 0 25px rgba(60, 120, 255, 0.3));
+      opacity: 1;
+    }
+
+    .golden-lightning-back-right {
+      transform: translate(-35%, -55%);
+      width: 950px;
+      filter: blur(1.5px) brightness(0.8) drop-shadow(0 0 10px rgba(80, 140, 255, 0.5)) drop-shadow(0 0 25px rgba(60, 120, 255, 0.3));
+      opacity: 1;
+    }
+
+    header > img:not(.golden-lightning):not(.header-chain) {
+      position: relative;
+      z-index: 3;
+    }
+
+    header::after {
+      content: '';
+      display: block;
+      margin: 10px auto 0;
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #8b0000, #cc0000, #8b0000, transparent);
+    }
+
+    .site-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 3em;
+      font-weight: 900;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #e8e8e8, #a0a0a0 40%, #707070 60%, #505050);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+    }
+
+    .subtitle {
+      font-family: Impact, 'Arial Narrow', sans-serif;
+      font-size: 1.3em;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-top: 0;
+      margin-bottom: 0;
+      margin-left: -40px;
+      margin-right: -40px;
+      padding: 14px 0;
+      text-align: center;
+      background: linear-gradient(180deg, #111, #0a0a0a);
+      border-bottom: 2px solid #222;
+      text-shadow: 0 0 8px rgba(200, 0, 0, 0.5), 0 0 20px rgba(200, 0, 0, 0.2);
+      color: #cc0000;
+    }
+
+    .divider {
+      text-align: center;
+      color: #cc0000;
+      font-size: 1.2em;
+      margin: 25px 0;
+      letter-spacing: 8px;
+      text-shadow: 0 0 8px rgba(200, 0, 0, 0.5);
+    }
+
+    .divider-line {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #444, #8b0000, #444, transparent);
+      margin: 0 0 20px 0;
+    }
+
+    nav {
+      text-align: center;
+      padding: 12px 0;
+      margin-left: -40px;
+      margin-right: -40px;
+      background: linear-gradient(180deg, #0d0d0d, #111, #0d0d0d);
+      border-top: 1px solid #2a2a2a;
+      border-bottom: 2px solid #1a1a1a;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    nav a {
+      font-family: Impact, 'Arial Narrow', sans-serif;
+      color: #888;
+      text-decoration: none;
+      margin: 0 18px;
+      font-size: 0.85em;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    nav a:hover {
+      color: #cc0000;
+      text-shadow: 0 0 8px rgba(200, 0, 0, 0.5);
+    }
+
+    .content-grid {
+      display: flex;
+      gap: 25px;
+      margin-top: 25px;
+    }
+
+    .sidebar {
+      width: 200px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-box {
+      border: 1px solid #2a2a2a;
+      background: linear-gradient(180deg, rgba(15, 15, 15, 0.9), rgba(8, 8, 8, 0.95));
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .sidebar-box h3 {
+      font-family: Impact, 'Arial Narrow', sans-serif;
+      font-size: 0.85em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #cc0000;
+      border-bottom: 1px solid #333;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 6px rgba(200, 0, 0, 0.3);
+    }
+
+    .sidebar-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar-box li {
+      padding: 4px 0;
+      font-size: 0.8em;
+    }
+
+    .sidebar-box li::before {
+      content: '\2666 ';
+      color: #555;
+      font-size: 0.7em;
+    }
+
+    .sidebar-box a {
+      color: #999;
+      text-decoration: none;
+    }
+
+    .sidebar-box a:hover {
+      color: #cc0000;
+    }
+
+    .sidebar-box p {
+      font-size: 0.8em;
+      color: #777;
+    }
+
+    #about {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      margin-bottom: 0;
+      position: relative;
+      overflow: visible;
+    }
+
+    #about .about-text {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+      margin-left: -30px;
+    }
+
+    #about .about-text p {
+      padding-left: 30px;
+    }
+
+    .character-showcase {
+      width: 550px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .showcase-img {
+      width: 100%;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    .showcase-fire {
+      position: absolute;
+      bottom: 0;
+      left: 2px;
+      width: 80%;
+      z-index: 1;
+      opacity: 1;
+    }
+
+    .fire-trail {
+      position: absolute;
+      bottom: 0;
+      left: 358px;
+      width: 80%;
+      height: 150px;
+      object-fit: cover;
+      object-position: bottom;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    @media (max-width: 1400px) {
+      .fire-trail {
+        display: none;
+      }
+    }
+
+    .fire-carousel-wrap {
+      position: relative;
+      overflow: visible;
+    }
+
+    /* Screenshot Carousel */
+    .screenshot-carousel {
+      float: right;
+      margin: -10px 0 15px 20px;
+      -webkit-user-select: none;
+      user-select: none;
+      z-index: 5;
+    }
+
+    .carousel-panel {
+      position: relative;
+    }
+
+    .carousel-stage {
+      position: relative;
+      width: 460px;
+      height: 260px;
+    }
+
+    .carousel-frame {
+      position: absolute;
+      overflow: hidden;
+      cursor: pointer;
+      border-top: 2px solid #c0bfb8;
+      border-left: 2px solid #c0bfb8;
+      border-right: 2px solid #5a5a5a;
+      border-bottom: 2px solid #5a5a5a;
+      box-shadow:
+        0 0 8px 2px rgba(240, 234, 214, 0.12),
+        0 3px 10px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease, box-shadow 0.3s ease;
+      transform-origin: center center;
+      transform-style: preserve-3d;
+    }
+
+    .carousel-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carousel-frame:hover,
+    .carousel-frame:focus-visible {
+      z-index: 10 !important;
+      border-color: #e8e0cc;
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 14px 5px rgba(255, 248, 230, 0.45),
+        0 0 30px 8px rgba(240, 234, 214, 0.25),
+        0 0 50px 12px rgba(255, 248, 230, 0.1),
+        0 10px 28px rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-frame:focus-visible {
+      outline: 2px solid #cc0000;
+      outline-offset: 2px;
+    }
+
+    .carousel-frame.pos-main {
+      left: 0;
+      top: 0;
+      width: 240px;
+      height: 180px;
+      z-index: 3;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carousel-frame.pos-side {
+      left: 250px;
+      top: 55px;
+      width: 190px;
+      height: 145px;
+      z-index: 2;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carousel-frame.pos-small {
+      left: 110px;
+      top: 140px;
+      width: 130px;
+      height: 100px;
+      z-index: 4;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carousel-frame.pos-hidden-right {
+      left: 460px;
+      top: 70px;
+      width: 150px;
+      height: 115px;
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .carousel-frame.pos-hidden-left {
+      left: -150px;
+      top: 70px;
+      width: 150px;
+      height: 115px;
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+
+
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .lightbox-overlay img {
+      max-width: 85vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-top: 2px solid #c0bfb8;
+      border-left: 2px solid #c0bfb8;
+      border-right: 2px solid #5a5a5a;
+      border-bottom: 2px solid #5a5a5a;
+      box-shadow: 0 0 30px rgba(240, 234, 214, 0.2), 0 10px 40px rgba(0, 0, 0, 0.8);
+      animation: lightbox-in 0.25s ease;
+    }
+
+    @keyframes lightbox-in {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .carousel-frame {
+        transition: none;
+      }
+      .carousel-frame:hover,
+      .carousel-frame:focus-visible {
+        transform: none;
+      }
+      .lightbox-overlay img {
+        animation: none;
+      }
+    }
+
+    @media (max-width: 1400px) {
+      .screenshot-carousel {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px auto;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .carousel-stage {
+        width: 100%;
+        height: 220px;
+      }
+      .carousel-frame.pos-main {
+        left: 5%;
+        width: 55%;
+        height: 170px;
+      }
+      .carousel-frame.pos-side {
+        left: 50%;
+        top: 50px;
+        width: 42%;
+        height: 130px;
+      }
+      .carousel-frame.pos-small {
+        left: 22%;
+        top: 120px;
+        width: 32%;
+        height: 90px;
+      }
+      .carousel-frame.pos-hidden-right,
+      .carousel-frame.pos-hidden-left {
+        display: none;
+      }
+    }
+
+    .main-content {
+      flex: 1;
+    }
+
+    section {
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-family: Impact, 'Arial Narrow', sans-serif;
+      font-size: 1.8em;
+      color: #cc0000;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      border-bottom: 1px solid #333;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(200, 0, 0, 0.3);
+    }
+
+    h2 {
+      font-family: Impact, 'Arial Narrow', sans-serif;
+      font-size: 1.2em;
+      color: #b0b0b0;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-family: 'Cinzel', serif;
+      color: #8b0000;
+      font-size: 1em;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 12px;
+      font-size: 0.95em;
+    }
+
+    a {
+      color: #cc0000;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    a:hover {
+      color: #ff3333;
+      border-bottom-color: #ff3333;
+    }
+
+    a:visited {
+      color: #8b0000;
+    }
+
+    strong, b {
+      color: #d4c9a8;
+    }
+
+    em, i {
+      color: #bfaa7a;
+      font-style: italic;
+    }
+
+    blockquote {
+      border-left: 3px solid #8b0000;
+      margin: 15px 0;
+      padding: 10px 20px;
+      background: rgba(139, 0, 0, 0.05);
+      font-style: italic;
+      color: #999;
+    }
+
+    .character-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .character-card {
+      border: 1px solid #2a2a2a;
+      padding: 10px 15px;
+      background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(10, 10, 10, 0.9));
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .character-card:hover {
+      border-color: #cc0000;
+      box-shadow: 0 0 10px rgba(200, 0, 0, 0.2);
+    }
+
+    .character-card strong {
+      display: block;
+      font-family: Impact, 'Arial Narrow', sans-serif;
+      color: #cc0000;
+      font-size: 0.95em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 0 6px rgba(200, 0, 0, 0.3);
+    }
+
+    .character-card span {
+      font-size: 0.8em;
+      color: #777;
+    }
+
+    ol {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    ol li {
+      margin-bottom: 6px;
+      font-size: 0.95em;
+    }
+
+    ul.plain {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul.plain li::before {
+      content: '\2022 ';
+      color: #8b0000;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 0 15px;
+      border-top: 1px solid #222;
+      margin-top: 30px;
+    }
+
+    footer::before {
+      content: '';
+      display: block;
+      margin: 0 auto 15px;
+      width: 40%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #8b0000, transparent);
+    }
+
+    footer p {
+      font-size: 0.75em;
+      color: #555;
+      letter-spacing: 2px;
+    }
+
+    .metal-plate {
+      border: 1px solid #444;
+      background: linear-gradient(180deg, #1a1a1a, #111, #1a1a1a);
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 15px rgba(200, 0, 0, 0.15), inset 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .metal-plate::before,
+    .metal-plate::after {
+      content: '\2726';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #444;
+      font-size: 0.8em;
+    }
+
+    .metal-plate::before { left: 10px; }
+    .metal-plate::after { right: 10px; }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #333;
+      padding: 3px 10px;
+      font-size: 0.7em;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #666;
+      margin: 3px;
+    }
+
+    #tsparticles {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 800px;
+      pointer-events: none;
+      z-index: 0;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 20%);
+    }
+
+    .burn-edge {
+      position: fixed;
+      bottom: 0;
+      width: 200px;
+      height: 250px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .burn-edge-left {
+      left: 0;
+      background:
+        radial-gradient(ellipse at 0% 100%, rgba(255, 60, 0, 0.3) 0%, rgba(200, 40, 0, 0.1) 40%, transparent 70%),
+        radial-gradient(ellipse at 10% 80%, rgba(255, 120, 0, 0.2) 0%, transparent 50%);
+    }
+
+    .burn-edge-right {
+      right: 0;
+      background:
+        radial-gradient(ellipse at 100% 100%, rgba(255, 60, 0, 0.3) 0%, rgba(200, 40, 0, 0.1) 40%, transparent 70%),
+        radial-gradient(ellipse at 90% 80%, rgba(255, 120, 0, 0.2) 0%, transparent 50%);
+    }
+
+    @media (max-width: 900px) {
+      .content-grid {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+      }
+      #about {
+        flex-direction: column;
+      }
+      .character-showcase {
+        width: 100%;
+        max-width: 600px;
+      }
+      .character-list {
+        grid-template-columns: 1fr;
+      }
+      .site-title {
+        font-size: 2em;
+        letter-spacing: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <img src="chains.overlay5.png" alt="" class="corner-chain corner-chain-back corner-chain-base-left">
+
+  <img src="chains-overlay2.png" alt="" class="corner-chain corner-chain-top-left">
+  <img src="chains-overlay2.png" alt="" class="corner-chain corner-chain-top-right">
+  <img src="chains-overlay7.png" alt="" class="corner-chain corner-chain-bottom-left">
+  <img src="chains-overlay7.png" alt="" class="corner-chain corner-chain-bottom-right">
+
+  <div class="page-wrapper">
+
+    <header>
+      <div class="header-video-wrapper">
+        <video autoplay muted loop playsinline>
+          <source src="lightning.mp4" type="video/mp4">
+        </video>
+        <img src="blue-lightning.png" alt="" class="golden-lightning golden-lightning-back-left">
+        <img src="blue-lightning.png" alt="" class="golden-lightning golden-lightning-back-right">
+        <img src="golden-lightning.png" alt="" class="golden-lightning golden-lightning-main">
+        <img src="crooked-lightning.png" alt="" class="golden-lightning crooked-lightning">
+      </div>
+      <img src="chains-overlay6.png" alt="" class="header-chain header-chain-overlay6-right">
+      <img src="chains-overlay6.png" alt="" class="header-chain header-chain-overlay6-left">
+      <img src="chains.overlay5.png" alt="" class="header-chain header-chain-back-right">
+      <div class="header-chains">
+        <img src="chains-overlay2.png" alt="" class="header-chain header-chain-left">
+        <img src="chains-overlay2.png" alt="" class="header-chain header-chain-right">
+      </div>
+      <img src="tekken5-logo.png" alt="Tekken 5 Logo" style="max-width: 550px; width: 100%; margin-bottom: 0;">
+    </header>
+    <div class="subtitle">The King of Iron Fist Tournament</div>
+
+    <nav>
+      <a href="#about">About</a>
+      <a href="#characters">Fighters</a>
+      <a href="#gameplay">Gameplay</a>
+      <a href="#soundtrack">Soundtrack</a>
+      <a href="#links">Links</a>
+    </nav>
+
+    <div class="content-grid">
+
+      <aside class="sidebar">
+
+        <div class="sidebar-box">
+          <h3>Navigate</h3>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#characters">My Mains</a></li>
+            <li><a href="#story">Story</a></li>
+            <li><a href="#gameplay">Gameplay</a></li>
+            <li><a href="#soundtrack">Soundtrack</a></li>
+            <li><a href="#why">Why Its the GOAT</a></li>
+            <li><a href="#links">Links</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-box">
+          <h3>Quick Stats</h3>
+          <p><b>Released:</b> 2004 (Arcade) / 2005 (PS2)</p>
+          <p><b>Developer:</b> Namco</p>
+          <p><b>Platform:</b> PlayStation 2, Arcade</p>
+          <p><b>Roster:</b> 32 fighters</p>
+          <p><b>Rating:</b> T for Teen</p>
+        </div>
+
+        <div class="sidebar-box">
+          <h3>Tags</h3>
+          <span class="badge">PS2 Classic</span>
+          <span class="badge">Fighting</span>
+          <span class="badge">3D Fighter</span>
+          <span class="badge">Namco</span>
+          <span class="badge">2005</span>
+        </div>
+
+      </aside>
+
+      <main class="main-content">
+
+        <section id="about">
+          <div class="character-showcase">
+            <img src="soft-flames.png" alt="" class="showcase-fire">
+            <img src="jin+asuka.png" alt="Jin Kazama and Asuka Kazama" class="showcase-img">
+          </div>
+          <div class="about-text">
+            <h1>About</h1>
+            <p>
+              One of <b>Devil Jin's</b> black feathers drifts down, and I'm back in Bangladesh playing <b>Tekken 5</b> on the PS2. I remember wondering if <b>Heihachi</b> was really dead, but the part of the opening that stuck with me most was <b>Asuka</b> riding her bike across the rooftops. I wanted to pick her before I even knew how she fought. Before I got into DC Comics and superheroes, I had Tekken.
+            </p>
+            <p>
+              Tekken 5 is my second-favorite game of all time, right behind <i>The Last of Us</i>. I miss how serious it felt, from the mystery around the <b>Mishima family</b> to the way <b>Devil Jin</b> looked in black leather and chains. I still put <b>"Sparking!"</b> on Spotify when I'm driving or studying. And judging by the chrome lettering and chains I picked for this page, the look of that game stuck with me just as much as the music did.
+            </p>
+          </div>
+        </section>
+
+        <div class="fire-carousel-wrap">
+          <img src="fire-trail.png" alt="" class="fire-trail">
+          <hr class="divider-line">
+        </div>
+
+        <section id="story">
+          <div class="screenshot-carousel" aria-label="Tekken 5 screenshot gallery">
+            <div class="carousel-panel">
+              <div class="carousel-stage" id="carouselStage">
+                <div class="carousel-frame pos-main" tabindex="0" role="button" aria-label="Screenshot 1: Feng vs Jin" data-index="0">
+                  <img src="screengrab1.jpg" alt="Feng vs Jin fight">
+                </div>
+                <div class="carousel-frame pos-side" tabindex="0" role="button" aria-label="Screenshot 2: Hwoarang vs Armor King" data-index="1">
+                  <img src="screengrab2.png" alt="Hwoarang vs Armor King">
+                </div>
+                <div class="carousel-frame pos-small" tabindex="0" role="button" aria-label="Screenshot 3: Handstand kick" data-index="2">
+                  <img src="screengrab3.jpg" alt="Christie handstand kick vs Paul">
+                </div>
+                <div class="carousel-frame pos-hidden-right" tabindex="-1" data-index="3">
+                  <img src="screengrab4.jpg" alt="Paul Phoenix close-up">
+                </div>
+                <div class="carousel-frame pos-hidden-right" tabindex="-1" data-index="4">
+                  <img src="screengrab5.jpg" alt="Asuka fighting stance">
+                </div>
+              </div>
+            </div>
+          </div>
+          <h1>The Story</h1>
+          <p>
+            So after Tekken 4, <b>Heihachi</b> gets jumped by a bunch of <b>Jack-4 robots</b> in the Hon-Maru temple. Huge explosion. Everyone thinks hes dead. <b>Kazuya</b> gets thrown off a cliff again (this family is insane) and then <b>Jinpachi Mishima</b> breaks free from under the temple. Hes Heihachis <i>father</i> and hes been locked up for decades.
+          </p>
+          <p>
+            Jinpachi got possessed by some <b>demonic force</b> and hes losing control so he starts the <i>King of Iron Fist Tournament 5</i> basically begging someone to come and stop him before he destroys everything. <b>Jin Kazama</b> enters to try and end the Mishima bloodline curse for good.
+          </p>
+          <blockquote>
+            "I am Jinpachi Mishima. I need the help of a strong soul. If you are reading this, I am probably already a monster."
+          </blockquote>
+        </section>
+
+        <div class="divider">&diams; &diams; &diams;</div>
+
+        <section id="characters">
+          <h1>My Mains</h1>
+          <p>
+            32 characters in this game. Here are the ones I rock with:
+          </p>
+
+          <div class="character-list">
+            <div class="character-card">
+              <strong>Jin Kazama</strong>
+              <span>Dropped the Mishima style for <i>traditional karate</i>. Hes cold, hes angry, and hes here to end the bloodline.</span>
+            </div>
+            <div class="character-card">
+              <strong>Devil Jin</strong>
+              <span>Jin but demonic. <b>Laser beams</b>, wings, insane combos. High risk high reward.</span>
+            </div>
+            <div class="character-card">
+              <strong>Hwoarang</strong>
+              <span><i>Tae Kwon Do</i> kicks for days. Jins rival. Nonstop pressure and way too much swag.</span>
+            </div>
+            <div class="character-card">
+              <strong>Asuka Kazama</strong>
+              <span>Jins cousin, new to Tekken 5. <i>Aikido</i> reversals that punish you for being too aggressive.</span>
+            </div>
+            <div class="character-card">
+              <strong>Raven</strong>
+              <span>Ninja agent. Teleports, shurikens, one of the hardest character designs in any fighting game.</span>
+            </div>
+            <div class="character-card">
+              <strong>Feng Wei</strong>
+              <span>Chinese <i>kenpo</i> fighter. Came to steal ancient scrolls. Hits like a truck.</span>
+            </div>
+          </div>
+        </section>
+
+        <hr class="divider-line">
+
+        <section id="gameplay">
+          <h1>Gameplay</h1>
+          <p>
+            They got rid of the weird uneven floors from Tekken 4 and brought back <em>flat stages</em>. The 4-button system stayed the same &mdash; <b>left punch, right punch, left kick, right kick</b> &mdash; but combos got way deeper.
+          </p>
+
+          <h2>What Made It Great</h2>
+          <ol>
+            <li><b>Crush system</b> &mdash; highs whiff on crouching, lows get crushed by jumps. Huge for mindgames.</li>
+            <li><b>32 characters</b> &mdash; each with <em>100+ moves</em>. Nobody plays the same.</li>
+            <li><b>Arcade History</b> &mdash; <i>Tekken 1, 2, and 3</i> fully playable on the disc. Insane value.</li>
+            <li><b>Devil Within</b> &mdash; beat-em-up side mode with <i>Jin</i> in the Mishima labs.</li>
+            <li><b>Customization</b> &mdash; costumes, accessories, colors for every fighter.</li>
+          </ol>
+        </section>
+
+        <div class="divider">&diams; &diams; &diams;</div>
+
+        <section id="soundtrack">
+          <h1>Soundtrack</h1>
+          <p>
+            One of the <b>hardest OSTs in gaming</b>. Electronic, rock, industrial, orchestral &mdash; every stage has a banger.
+          </p>
+
+          <h2>Best Tracks</h2>
+          <ul class="plain">
+            <li><b>"Moonlit Wilderness"</b> &mdash; THE Tekken 5 track. Haunting and goes stupid hard.</li>
+            <li><b>"Sparking"</b> &mdash; the opening theme. Pure adrenaline.</li>
+            <li><b>"Ground Zero Funk"</b> &mdash; Burning Temple stage. Groovy but aggressive.</li>
+            <li><b>"Formless Like Water"</b> &mdash; chill and hypnotic.</li>
+            <li><b>"Crimson Sunset"</b> &mdash; final stage theme. <i>Chills every time.</i></li>
+          </ul>
+        </section>
+
+        <hr class="divider-line">
+
+        <section id="why">
+          <h1>Why Its the GOAT</h1>
+          <p>
+            This is the game that got me into fighting games. The way every hit has <i>weight</i> to it, the character depth, the style of the menus and cutscenes &mdash; nothing else comes close for me.
+          </p>
+          <p>
+            Single player alone is crazy. <em>Story Mode</em>, <em>Arcade History</em>, <em>Devil Within</em>, customization grinding &mdash; you could play for <b>hundreds of hours</b> and never touch VS mode.
+          </p>
+          <p>
+            And the whole <b>aesthetic</b> of this game is just <i>unmatched</i>. Dark, metallic, 2000s gothic energy. Chrome menus, brooding character designs. It looks like it was forged in a factory and set on fire.
+          </p>
+        </section>
+
+        <div class="metal-plate">
+          <h2>Get Ready for the Next Battle</h2>
+          <p><em>The King of Iron Fist Tournament never ends.</em></p>
+        </div>
+
+        <section id="links">
+          <h1>Links</h1>
+          <ul class="plain">
+            <li><a href="https://en.wikipedia.org/wiki/Tekken_5">Tekken 5 on Wikipedia</a></li>
+            <li><a href="https://tekken.fandom.com/wiki/Tekken_5">Tekken Wiki</a> &mdash; lore, characters, move lists</li>
+            <li><a href="https://www.youtube.com/results?search_query=tekken+5+soundtrack">Tekken 5 OST on YouTube</a></li>
+            <li><a href="https://www.bandainamcoent.com/games/tekken">Official Bandai Namco Tekken Page</a></li>
+            <li><a href="https://www.reddit.com/r/Tekken/">r/Tekken</a></li>
+          </ul>
+        </section>
+
+      </main>
+
+    </div>
+
+    <footer>
+      <p>&copy; 2026 &middot; Zarif &middot; Tekken is property of Bandai Namco</p>
+      <p style="margin-top: 8px; font-size: 0.7em; color: #444;">
+        Made for web design class. All content is fan-made.
+      </p>
+    </footer>
+
+  </div>
+
+  <div id="lightbox" class="lightbox-overlay" aria-label="Screenshot lightbox">
+    <img src="" alt="Enlarged screenshot">
+  </div>
+
+  <div id="tsparticles"></div>
+  <div class="burn-edge burn-edge-left"></div>
+  <div class="burn-edge burn-edge-right"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/preset-fire@3/tsparticles.preset.fire.bundle.min.js"></script>
+  <script>
+    (async () => {
+      await loadFirePreset(tsParticles);
+      await tsParticles.load({
+        id: "tsparticles",
+        options: {
+          preset: "fire",
+          background: {
+            color: "transparent",
+            opacity: 0
+          },
+          emitters: {
+            position: {
+              x: 50,
+              y: 100
+            },
+            rate: {
+              quantity: 5,
+              delay: 0.15
+            },
+            size: {
+              width: 100,
+              height: 0
+            }
+          },
+          particles: {
+            number: {
+              value: 80
+            },
+            move: {
+              speed: 3,
+              direction: "top",
+              outModes: {
+                top: "destroy",
+                default: "destroy"
+              }
+            },
+            size: {
+              value: { min: 1, max: 4 }
+            },
+            opacity: {
+              value: { min: 0.3, max: 0.8 }
+            }
+          },
+          fullScreen: {
+            enable: false
+          },
+          pauseOnOutsideViewport: false,
+          pauseOnBlur: false,
+          detectRetina: true,
+          fpsLimit: 60,
+          interactivity: {
+            detectsOn: "canvas"
+          }
+        }
+      });
+      const container = tsParticles.domItem(0);
+      if (container) {
+        container.pause = () => {};
+      }
+    })();
+
+    const burnLeft = document.querySelector('.burn-edge-left');
+    const burnRight = document.querySelector('.burn-edge-right');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = Math.min(scrollTop / docHeight, 1);
+
+      const baseOpacity = 0.15;
+      const maxOpacity = 1;
+      const opacity = baseOpacity + (maxOpacity - baseOpacity) * progress;
+
+      const baseScale = 1;
+      const maxScale = 1.4;
+      const scale = baseScale + (maxScale - baseScale) * progress;
+
+      burnLeft.style.opacity = opacity;
+      burnLeft.style.transform = 'scale(' + scale + ')';
+      burnLeft.style.transformOrigin = 'bottom left';
+
+      burnRight.style.opacity = opacity;
+      burnRight.style.transform = 'scale(' + scale + ')';
+      burnRight.style.transformOrigin = 'bottom right';
+    });
+
+    // Screenshot Carousel
+    (function() {
+      var slots = ['pos-main', 'pos-side', 'pos-small', 'pos-hidden-right', 'pos-hidden-left'];
+      var frames = Array.from(document.querySelectorAll('.carousel-frame'));
+      var order = [0, 1, 2, 3, 4];
+      var lightbox = document.getElementById('lightbox');
+      var lightboxImg = lightbox.querySelector('img');
+
+      function apply() {
+        for (var i = 0; i < frames.length; i++) {
+          frames[order[i]].className = 'carousel-frame ' + slots[i];
+          frames[order[i]].tabIndex = i < 3 ? 0 : -1;
+        }
+      }
+
+      function next() {
+        order = [order[1], order[3], order[0], order[4], order[2]];
+        apply();
+      }
+
+      function prev() {
+        order = [order[2], order[0], order[4], order[1], order[3]];
+        apply();
+      }
+
+      function openLightbox(src) {
+        lightboxImg.src = src;
+        lightbox.classList.add('active');
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+      }
+
+      lightbox.addEventListener('click', closeLightbox);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox();
+      });
+
+      var clickTimer = null;
+      var clickTarget = null;
+      var savedOrder = null;
+      frames.forEach(function(f) {
+        f.addEventListener('click', function() {
+          if (clickTimer && clickTarget === f) {
+            // Double click: revert the cycle from first click and open lightbox
+            clearTimeout(clickTimer);
+            clickTimer = null;
+            clickTarget = null;
+            if (savedOrder) {
+              order = savedOrder;
+              apply();
+              savedOrder = null;
+            }
+            var img = f.querySelector('img');
+            if (img) openLightbox(img.src);
+            return;
+          }
+          if (clickTimer) clearTimeout(clickTimer);
+          // Save order before cycling so we can revert on double click
+          savedOrder = order.slice();
+          clickTarget = f;
+          if (f.classList.contains('pos-small')) prev();
+          else next();
+          clickTimer = setTimeout(function() {
+            clickTimer = null;
+            clickTarget = null;
+            savedOrder = null;
+          }, 350);
+        });
+        f.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (f.classList.contains('pos-small')) prev();
+            else next();
+          }
+        });
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.target.closest('.screenshot-carousel')) {
+          if (e.key === 'ArrowRight') next();
+          else if (e.key === 'ArrowLeft') prev();
+        }
+      });
+    })();
+
+    // Vanilla Tilt on carousel frames
+    VanillaTilt.init(document.querySelectorAll('.carousel-frame'), {
+      max: 12,
+      speed: 400,
+      glare: true,
+      'max-glare': 0.15,
+      perspective: 800,
+      scale: 1.02
+    });
+
+  </script>
+</body>
+</html>
